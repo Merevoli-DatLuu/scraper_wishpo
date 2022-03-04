@@ -8,7 +8,7 @@ from requests.structures import CaseInsensitiveDict
 
 OEM_OPTIONS = [3]
 PSM_OPTIONS = [6, 7, 8, 10, 13]
-NO_IMAGE_EXPORT = False
+NO_IMAGE_EXPORT = True
 IMAGE_FILE_NAME = 'sample_image.png'
 bsid = None
 image_content = None
@@ -96,8 +96,12 @@ def solve_captcha(with_training = False):
         return None
 
 def send_data(code):
-    API_URL = 'http://0f59-2402-800-63b8-c3a0-403d-1629-e8-2363.ngrok.io/api/upload'
-    files = {'image_file': open('sample_image.png','rb')}
+    API_URL = 'http://172.104.179.206:8000/api/upload'
+    global image_content
+
+    file_like = BytesIO(image_content)
+
+    files = {'image_file': file_like}
     values = {'code': str(code)}
 
     r = requests.post(API_URL, files=files, data=values)
